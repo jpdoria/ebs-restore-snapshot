@@ -1,10 +1,6 @@
 # About
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
-[![forthebadge](http://forthebadge.com/images/badges/powered-by-oxygen.svg)](http://forthebadge.com)
-[![forthebadge](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)](http://forthebadge.com)
-
-A Python script that can restore snapshots created by [ebs-snapshot-python](https://github.com/jpdoria/ebs-snapshot-python).
+Restore snapshots created by [ebs-snapshot-python](https://github.com/jpdoria/ebs-snapshot-python).
 
 # Prerequisite
 
@@ -40,16 +36,22 @@ This is the IAM policy:
 }
 ```
 
+# Installation
+
+```bash
+pip install ebsrs
+```
+
 # Usage
 
 ```bash
-# ./ebs-restore-snapshot.py
-usage: ebs-restore-snapshot.py [-h] -r REGION -i INSTANCE_ID
-ebs-restore-snapshot.py: error: the following arguments are required: -r/--region, -i/--instance-id
-# ./ebs-restore-snapshot.py --help
-usage: ebs-restore-snapshot.py [-h] -r REGION -i INSTANCE_ID
+# ebsrs
+usage: ebsrs [-h] -r REGION -i INSTANCE_ID [-v]
+ebsrs: error: the following arguments are required: -r/--region, -i/--instance-id
+# ebsrs --help
+usage: ebsrs [-h] -r REGION -i INSTANCE_ID [-v]
 
-EBS Restore Snapshot v1.0
+EBS Restore Snapshot v0.1.0
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -57,59 +59,50 @@ optional arguments:
                         AWS Region
   -i INSTANCE_ID, --instance-id INSTANCE_ID
                         Instance ID (i-1234567)
+  -v, --version         Display version
 #
 ```
 
 # Example
 
 ```bash
-# ./ebs-restore-snapshot.py --region ap-southeast-1 --instance-id i-9652b917
-2016-Dec-23 02:54:37 PM | INFO - main - Region: ap-southeast-1
-2016-Dec-23 02:54:37 PM | INFO - main - InstanceId: i-9652b917
-2016-Dec-23 02:54:37 PM | INFO - main - Fetching root volume of i-9652b917...
-2016-Dec-23 02:54:37 PM | INFO - load - Found credentials in shared credentials file: ~/.aws/credentials
-2016-Dec-23 02:54:38 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:54:40 PM | INFO - main - VolumeId: vol-817b0e05
-2016-Dec-23 02:54:40 PM | INFO - main - Fetching snapshots of vol-817b0e05...
-2016-Dec-23 02:54:40 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-1)	snap-0bff7c87332e5b6e8
-	2016-12-23 04:18:54+00:00
+# ebsrs -r ap-southeast-1 -i i-2f0b2aa1
+Region: ap-southeast-1
+InstanceId: i-2f0b2aa1
+Fetching root volume of i-2f0b2aa1...
+VolumeId: vol-0fd09c171ebdac8f5
+Fetching snapshots of vol-0fd09c171ebdac8f5...
+1)	snap-06591742121affdac
+	2017-02-16 16:01:08+00:00
 
-2)	snap-03a9ab12b8d6df2a2
-	2016-12-22 04:18:51+00:00
+2)	snap-01973940c534a685f
+	2017-02-15 16:01:09+00:00
 
-3)	snap-0599e851d5cb48ba6
-	2016-12-21 04:18:52+00:00
+3)	snap-04459a725001860b7
+	2017-02-14 16:01:09+00:00
 
 Choose a snapshot [1-3]: 3
-2016-Dec-23 02:54:46 PM | INFO - main - Your choice is [3] snap-0599e851d5cb48ba6 - 2016-12-21 04:18:52+00:00
-2016-Dec-23 02:54:46 PM | INFO - main - Creating a new volume using snap-0599e851d5cb48ba6...
-2016-Dec-23 02:54:46 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:03 PM | INFO - _get_conn - Resetting dropped connection: ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:05 PM | INFO - main - NewVolumeId: vol-07870a991d3510f3d
-2016-Dec-23 02:55:05 PM | INFO - main - NewVolumeStatus: available
-2016-Dec-23 02:55:05 PM | INFO - main - Stopping i-9652b917...
-2016-Dec-23 02:55:05 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:22 PM | INFO - _get_conn - Resetting dropped connection: ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:39 PM | INFO - _get_conn - Resetting dropped connection: ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:42 PM | INFO - main - InstanceStatus: stopped
-2016-Dec-23 02:55:42 PM | INFO - main - OldVolumeId: vol-817b0e05
-2016-Dec-23 02:55:42 PM | INFO - main - Detaching old volume from /dev/xvda...
-2016-Dec-23 02:55:42 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:55:59 PM | INFO - _get_conn - Resetting dropped connection: ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:56:01 PM | INFO - main - Old volume is now detached
-2016-Dec-23 02:56:01 PM | INFO - main - Attaching new volume to i-9652b917 [/dev/xvda]...
-2016-Dec-23 02:56:01 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:56:03 PM | INFO - main - New volume is now attached
-2016-Dec-23 02:56:03 PM | INFO - main - Starting i-9652b917...
-2016-Dec-23 02:56:03 PM | INFO - _new_conn - Starting new HTTPS connection (1): ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:56:20 PM | INFO - _get_conn - Resetting dropped connection: ec2.ap-southeast-1.amazonaws.com
-2016-Dec-23 02:56:22 PM | INFO - main - InstanceStatus: running
-2016-Dec-23 02:56:22 PM | INFO - main - Task completed successfully
+Your choice is [3] snap-04459a725001860b7 - 2017-02-14 16:01:09+00:00
+Creating a new volume using snap-04459a725001860b7...
+NewVolumeId: vol-07e5a167e70b6f036
+NewVolumeStatus: available
+Stopping i-2f0b2aa1...
+InstanceStatus: stopped
+OldVolumeId: vol-0fd09c171ebdac8f5
+Detaching old volume from /dev/sda1...
+Old volume is now detached
+Attaching new volume to i-2f0b2aa1 [/dev/sda1]...
+New volume is now attached
+Starting i-2f0b2aa1...
+InstanceStatus: running
+Do you want to remove the old volume? [Y/N] y
+Removing old EBS volume (vol-0fd09c171ebdac8f5)...
+vol-0fd09c171ebdac8f5 has been removed.
+Task completed successfully
 #
 ```
 
-# Contribution
+# Contributing
 
 This project is still young and there are things that need to be done. If you have ideas that would improve this app, feel free to contribute!
 
