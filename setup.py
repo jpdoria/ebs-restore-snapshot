@@ -10,7 +10,7 @@ setup(
     author='John Paul P. Doria',
     author_email='jp@lazyadm.in',
     description=('Restore snapshots created by ebs-snapshot-python ' +
-                 '(https://github.com/jpdoria/ebs-snapshot-python.'),
+                 '(https://github.com/jpdoria/ebs-snapshot-python)'),
     license='MIT',
     keywords='aws ec2 ebs restore snapshot',
     url='https://github.com/jpdoria/ebsrs',
