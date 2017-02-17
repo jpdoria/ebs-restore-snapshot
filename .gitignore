@@ -1,3 +1,7 @@
 .idea
 env
 tags
+build
+dist
+*.egg-info
+ebsrs/__pycache__
